@@ -1,0 +1,12 @@
+{
+    "name": "workly",
+    "version": "1.0.0",
+    "description": "To Do List App",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "devDependencies": {
+        "electron": "^32.2.0"
+    }
+}

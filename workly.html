@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workly</title>
+    <link rel="stylesheet" href="workly.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="todo-app">
+            <h1 class="title">Your Day</h1>
+
+            <!-- Input Group for New Task -->
+            <div class="input-group">
+                <input type="text" id="taskInput" placeholder="Add a new task..." />
+
+                <!-- Category Dropdown -->
+                <select id="taskCategory">
+                    <option value="Work">Work</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Custom">Custom</option>
+                </select>
+
+                <!-- Priority Dropdown -->
+                <select id="taskPriority">
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                </select>
+
+                <!-- Due Date -->
+                <input type="date" id="taskDueDate" />
+
+                <!-- Add Task Button -->
+                <button id="addTaskBtn">+</button>
+            </div>
+
+            <!-- Task List -->
+            <ul id="taskList"></ul>
+        </div>
+    </div>
+
+    <script src="workly.js"></script>
+</body>
+</html>

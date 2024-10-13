@@ -1,0 +1,235 @@
+/* Basic reset */
+.title-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #000000; /* Set the title bar background color to black */
+    color: white;
+    padding: 10px 20px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    font-family: 'Arial', sans-serif;
+    user-select: none;
+}
+
+/* Background image with full coverage */
+body {
+    background: url('https://images.pexels.com/photos/13202498/pexels-photo-13202498.jpeg') no-repeat center center/cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Container for centering content */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Frosted glass effect for the app */
+.todo-app {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 800px;
+    text-align: center;
+    color: white;
+}
+
+/* App title */
+.title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+/* Input group styling */
+.input-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+#taskInput, #taskCategory, #taskPriority, #taskDueDate {
+    width: 18%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background: rgba(255, 255, 255, 0.5);
+    color: #333;
+    outline: none;
+    margin-right: 10px;
+}
+
+#taskInput {
+    width: 40%; /* Make the task input box wider */
+}
+
+#addTaskBtn {
+    width: 10%;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    background-color: #ff7675;
+    color: white;
+    cursor: pointer;
+    font-size: 1.5rem;
+}
+
+#addTaskBtn:hover {
+    background-color: #d63031;
+}
+
+/* Task list styles */
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    transition-duration: 0.5s;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+li.completed {
+    transition-duration: 0.5s;
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+li button {
+    background-color: transparent;
+    border: none;
+    color: #ff7675;
+    cursor: pointer;
+    font-size: 1.2rem;
+}
+
+li button:hover {
+    color: #d63031;
+}
+
+/* Task Name */
+
+.task_name_display {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    text-transform: capitalize;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Category label styles */
+.category {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+/* Category-specific colors */
+.category.work {
+    background-color: #74b9ff;
+    color: white;
+}
+
+.category.personal {
+    background-color: #a29bfe;
+    color: white;
+}
+
+.category.shopping {
+    background-color: #55efc4;
+    color: white;
+}
+
+.category.custom {
+    background-color: #ffeaa7;
+    color: black;
+}
+
+/* Priority label styles */
+.priority {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    margin-left: 10px;
+    text-transform: capitalize;
+    cursor: pointer;
+}
+
+/* Priority-specific colors */
+.priority.low {
+    background-color: #55efc4;
+    color: white;
+}
+
+.priority.medium {
+    background-color: #fdcb6e;
+    color: white;
+}
+
+.priority.high {
+    background-color: #ff7675;
+    color: white;
+}
+
+/* Due date styling */
+.due-date {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    color: #ffffff;
+    background-color: #636e72;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.due-date.overdue {
+    background-color: #d63031;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .todo-app {
+        width: 90%;
+    }
+
+    #taskInput, #taskCategory, #taskPriority, #taskDueDate, #addTaskBtn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .category, .priority, .due-date {
+        margin-left: 0;
+        margin-top: 5px;
+    }
+}
