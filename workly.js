@@ -9,6 +9,7 @@ const taskList = document.getElementById("taskList");
 // Event listener to add a task
 addTaskBtn.addEventListener("click", async () => {
     const taskText = taskInput.value.trim();
+    console.log(taskText);
     const category = taskCategory.value;
     const priority = taskPriority.value;
     const dueDate = taskDueDate.value;
@@ -30,19 +31,22 @@ function clearInputs() {
     taskDueDate.value = "";      // Clear due date
 }
 
-// Function to render a task with priority, category, and due date
 function renderTask(task) {
     const li = document.createElement("li");
     li.setAttribute("data-id", task.id);
+    li.setAttribute("id", `task-${task.id}`); // Set unique ID for each task
     li.classList.add("task-item");
 
-    // Set opacity if task is completed
     if (task.completed) {
         li.classList.add("completed");
         li.style.opacity = "0.5"; // Make task slightly transparent
     }
 
+    // const taskInput = document.getElementById("taskInput");
+    // const taskText = taskInput.value.trim();
     const formattedDueDate = formatDueDate(task.due_date);
+    // const newTaskName = document.getElementById('taskInput').value;
+    // console.log(`trying to display: ${document.getElementById('taskInput').value}`);
 
     li.innerHTML = `
         <p class="task_name_display">${task.task_text}</p>
@@ -50,6 +54,7 @@ function renderTask(task) {
         <span class="priority ${task.priority.toLowerCase()}">${task.priority}</span>
         <span class="due-date">${formattedDueDate ? formattedDueDate : 'No due date'}</span>
         <button class="completeBtn">o</button>
+        <button class="deleteBtn" id="delete_task_btn_id${task.id}" style="font-size:13px;color:white;">✖️</button>
     `;
 
     // Append task to the list
@@ -65,10 +70,16 @@ function renderTask(task) {
         const taskId = li.getAttribute("data-id");
         const updatedTask = await toggleTask(taskId);
         if (updatedTask) {
-            // Move task to the bottom if completed or top if active
             li.remove(); // Remove task from current position
             renderTask(updatedTask); // Re-render task in new position
         }
+    });
+
+    // Delete task
+    li.querySelector(".deleteBtn").addEventListener("click", async (e) => {
+        e.stopPropagation(); // Prevent unwanted event bubbling
+        const taskId = li.getAttribute("data-id");
+        await deleteTask(taskId); // Call delete API
     });
 }
 
@@ -91,6 +102,7 @@ function formatDueDate(dateString) {
 
 // Function to add a task (API call)
 async function addTask(taskText, category, priority, dueDate) {
+    console.log('addtask called');
     try {
         const response = await fetch('http://localhost:5000/tasks', {
             method: 'POST',
@@ -148,3 +160,7 @@ async function deleteTask(taskId) {
         console.error('Error deleting task:', error);
     }
 }
+document.getElementById('delete_task_btn_id${taskId}').addEventListener('click', function() {
+    deleteTask(taskId);
+    console.log(`deleting task ${taskId}`);
+});
