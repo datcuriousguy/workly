@@ -77,6 +77,7 @@ def get_tasks():
 
 @app.route('/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
+    print('delete task fn called')
     connection = get_db_connection()
     cursor = connection.cursor()
 
