@@ -28,6 +28,8 @@ CREATE TABLE workly (
     PRIMARY KEY (id)
 );
 
+
+Brief note: when the the app saves new tasks, it displays thenew tasks as 'undefined' on the webpage
 If you find any discrepancies in the code, please reach out so I can further improve the app.
 
 cheerios and have fun doing things
