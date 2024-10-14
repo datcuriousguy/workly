@@ -9,8 +9,8 @@ CORS(app)
 # Configure your MySQL connection
 db_config = {
     'host': 'localhost',
-    'user': 'root',  # Replace with your MySQL username
-    'password': 'Hayabusa@2004',  # Replace with your MySQL password
+    'user': 'your-username',  # Replace with your MySQL username
+    'password': 'your-password',  # Replace with your MySQL password
     'database': 'todolist'  # Replace with your database name
 }
 
