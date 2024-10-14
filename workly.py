@@ -15,13 +15,31 @@ db_config = {
 }
 
 
-# Helper function to get a database connection
-def get_db_connection():
+def get_db_connection() -> mysql.connector.connection.MySQLConnection:
+    """
+    Establish a connection to the MySQL database.
+
+    Returns
+    -------
+    mysql.connector.connection.MySQLConnection
+        A MySQL connection object.
+    """
     return mysql.connector.connect(**db_config)
 
 
 @app.route('/tasks', methods=['POST'])
 def add_task():
+    """
+    Add a new task to the database.
+
+    The task data is expected in JSON format in the request body.
+    Creates a new task with the specified text, category, priority, and due date.
+
+    Returns
+    -------
+    flask.Response
+        JSON response containing the newly added task with a 201 status code.
+    """
     task_data = request.get_json()
     task_text = task_data['task_text']
     category = task_data.get('category', 'General')
@@ -31,17 +49,14 @@ def add_task():
     connection = get_db_connection()
     cursor = connection.cursor()
 
-    # Insert the new task into the database
     cursor.execute(
         "INSERT INTO workly (task_text, category, priority, due_date) VALUES (%s, %s, %s, %s)",
         (task_text, category, priority, due_date)
     )
     connection.commit()
 
-    # Get the ID of the newly inserted task
     task_id = cursor.lastrowid
 
-    # Return the newly created task
     new_task = {
         'id': task_id,
         'text': task_text,
@@ -58,17 +73,21 @@ def add_task():
 
 @app.route('/tasks', methods=['GET'])
 def get_tasks():
+    """
+    Retrieve all tasks from the database.
+
+    Fetches the list of all tasks stored in the database.
+
+    Returns
+    -------
+    flask.Response
+        JSON response containing a list of all tasks with a 200 status code.
+    """
     connection = get_db_connection()
     cursor = connection.cursor(dictionary=True)
 
-    # Retrieve all tasks from the database
     cursor.execute("SELECT id, task_text, category, priority, due_date FROM workly")
     tasks = cursor.fetchall()
-
-    # Format tasks
-
-    # Print tasks to debug
-    print(tasks)  # Print the list of tasks to the console for debugging
 
     cursor.close()
     connection.close()
@@ -76,12 +95,23 @@ def get_tasks():
 
 
 @app.route('/tasks/<int:task_id>', methods=['DELETE'])
-def delete_task(task_id):
-    print('delete task fn called')
+def delete_task(task_id: int):
+    """
+    Delete a task from the database by its ID.
+
+    Parameters
+    ----------
+    task_id : int
+        The ID of the task to be deleted.
+
+    Returns
+    -------
+    flask.Response
+        An empty response with a 204 status code.
+    """
     connection = get_db_connection()
     cursor = connection.cursor()
 
-    # Delete the task from the database
     cursor.execute("DELETE FROM workly WHERE id = %s", (task_id,))
     connection.commit()
 
@@ -91,24 +121,37 @@ def delete_task(task_id):
 
 
 @app.route('/tasks/<int:task_id>', methods=['PATCH'])
-def toggle_task(task_id):
+def toggle_task(task_id: int):
+    """
+    Toggle the completion status of a task.
+
+    Updates the 'completed' field of the task with the given ID.
+
+    Parameters
+    ----------
+    task_id : int
+        The ID of the task to toggle completion status.
+
+    Returns
+    -------
+    flask.Response
+        JSON response containing the updated task details with a 200 status code.
+    """
     connection = get_db_connection()
     cursor = connection.cursor()
 
-    # Toggle the 'completed' field for the task
     cursor.execute("UPDATE workly SET completed = NOT completed WHERE id = %s", (task_id,))
     connection.commit()
-    print(f'task_id: {task_id}')
 
-    # Fetch the updated task to return
-    cursor.execute("SELECT id, task_text, category, priority, due_date, completed FROM workly WHERE id = %s",
-                   (task_id,))
+    cursor.execute(
+        "SELECT id, task_text, category, priority, due_date, completed FROM workly WHERE id = %s",
+        (task_id,)
+    )
     updated_task = cursor.fetchone()
 
     cursor.close()
     connection.close()
 
-    # Return the updated task
     return jsonify({
         'id': updated_task[0],
         'task_text': updated_task[1],
