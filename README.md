@@ -1,7 +1,7 @@
 # workly
 A To Do App for Desktop that uses electron and flask.
 
-To turn her on open cmd in directory as all the files and type 'npm start'.
+To run the app, I open cmd in directory as all the files and type 'npm start'.
 
 You have to have electron installed for npm start to work. If you don't have electron,
 install electron using pip or any online source u find.
@@ -31,6 +31,8 @@ CREATE TABLE workly (
 
 Brief note: when the the app saves new tasks, it displays thenew tasks as 'undefined' on the webpage
 If you find any discrepancies in the code, please reach out so I can further improve the app.
+
+Note on 28th oct: the above bug was sorted.
 
 cheerios and have fun doing things
 
