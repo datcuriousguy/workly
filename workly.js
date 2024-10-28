@@ -15,9 +15,11 @@ addTaskBtn.addEventListener("click", async () => {
     const dueDate = taskDueDate.value;
 
     if (taskText !== "") {
-        const newTask = await addTask(taskText, category, priority, dueDate); // Add task via API
+        const newTask = await addTask(taskText, category, priority, dueDate); // Adding th e task via API
         if (newTask) {
-            renderTask(newTask); // Render the task on success
+            renderNewTask(newTask); // Render that task on success
+
+            //commented out renderTask() and added a custom version of rendertask:
             clearInputs();
         }
     }
@@ -30,6 +32,8 @@ function clearInputs() {
     taskPriority.value = "Low";  // Default to 'Low'
     taskDueDate.value = "";      // Clear due date
 }
+
+
 
 function renderTask(task) {
     const li = document.createElement("li");
@@ -47,6 +51,8 @@ function renderTask(task) {
     const formattedDueDate = formatDueDate(task.due_date);
     // const newTaskName = document.getElementById('taskInput').value;
     // console.log(`trying to display: ${document.getElementById('taskInput').value}`);
+
+    console.log(task.taskText);
 
     li.innerHTML = `
         <p class="task_name_display">${task.task_text}</p>
@@ -82,6 +88,75 @@ function renderTask(task) {
         await deleteTask(taskId); // Call delete API
     });
 }
+
+
+// for new task render:
+
+// CODE ADJUSTMENT MADE ON 28TH OCT 2024:
+
+// I added a new function called renderNewTask(task) that adds the name of the task entered in the
+// task name box to the newly created task row. 
+
+// ^ this newly created task was previously Undefined.
+
+function renderNewTask(task) {
+    const li = document.createElement("li");
+    li.setAttribute("data-id", task.id);
+    li.setAttribute("id", `task-${task.id}`); // Set unique ID for each task
+    li.classList.add("task-item");
+
+    if (task.completed) {
+        li.classList.add("completed");
+        li.style.opacity = "0.5"; // Make task slightly transparent
+    }
+
+    // const taskInput = document.getElementById("taskInput");
+    // const taskText = taskInput.value.trim();
+    const formattedDueDate = formatDueDate(task.due_date);
+    // const newTaskName = document.getElementById('taskInput').value;
+    // console.log(`trying to display: ${document.getElementById('taskInput').value}`);
+
+    const newTaskName = taskInput.value;
+
+    console.log(task.taskText);
+
+    li.innerHTML = `
+        <p class="task_name_display">${newTaskName}</p>
+        <span class="category ${task.category.toLowerCase()}">${task.category}</span>
+        <span class="priority ${task.priority.toLowerCase()}">${task.priority}</span>
+        <span class="due-date">${formattedDueDate ? formattedDueDate : 'No due date'}</span>
+        <button class="completeBtn">o</button>
+        <button class="deleteBtn" id="delete_task_btn_id${task.id}" style="font-size:13px;color:white;">✖️</button>
+    `;
+
+    // Append task to the list
+    if (task.completed) {
+        taskList.appendChild(li); // Completed tasks go at the bottom
+    } else {
+        taskList.insertBefore(li, taskList.firstChild); // Active tasks go at the top
+    }
+
+    // Toggle task completion
+    li.querySelector(".completeBtn").addEventListener("click", async (e) => {
+        e.stopPropagation(); // Prevent toggling completion on li click
+        const taskId = li.getAttribute("data-id");
+        const updatedTask = await toggleTask(taskId);
+        if (updatedTask) {
+            li.remove(); // Remove task from current position
+            renderTask(updatedTask); // Re-render task in new position
+        }
+    });
+
+    // Delete task
+    li.querySelector(".deleteBtn").addEventListener("click", async (e) => {
+        e.stopPropagation(); // Prevent unwanted event bubbling
+        const taskId = li.getAttribute("data-id");
+        await deleteTask(taskId); // Call delete API
+    });
+}
+
+//end of code for new task render.
+
 
 // Function to format due date
 function formatDueDate(dateString) {
