@@ -17,6 +17,7 @@ addTaskBtn.addEventListener("click", async () => {
     if (taskText !== "") {
         const newTask = await addTask(taskText, category, priority, dueDate); // Adding th e task via API
         if (newTask) {
+            console.log(`new tasks due date: ${dueDate}`);
             renderNewTask(newTask); // Render that task on success
 
             //commented out renderTask() and added a custom version of rendertask:
@@ -44,6 +45,15 @@ function renderTask(task) {
     if (task.completed) {
         li.classList.add("completed");
         li.style.opacity = "0.5"; // Make task slightly transparent
+    }
+
+    dueDate = document.getElementById('taskDueDate').value;
+    console.log(`duedate: ${dueDate}`)
+    console.log('addtask called');
+    if (dueDate === '') {
+        dueDate = 'No Due Date'
+    }else{
+        dueDate = dueDate
     }
 
     // const taskInput = document.getElementById("taskInput");
@@ -113,10 +123,20 @@ function renderNewTask(task) {
     // const taskInput = document.getElementById("taskInput");
     // const taskText = taskInput.value.trim();
     const formattedDueDate = formatDueDate(task.due_date);
+    // console.log(`formattedDueDate: ${formattedDueDate}`);
     // const newTaskName = document.getElementById('taskInput').value;
     // console.log(`trying to display: ${document.getElementById('taskInput').value}`);
 
     const newTaskName = taskInput.value;
+
+    dueDate = document.getElementById('taskDueDate').value;
+    console.log(`duedate: ${dueDate}`)
+    console.log('addtask called');
+    if (dueDate === '') {
+        dueDate = 'No Due Date'
+    }else{
+        dueDate = dueDate
+    }
 
     console.log(task.taskText);
 
@@ -124,7 +144,7 @@ function renderNewTask(task) {
         <p class="task_name_display">${newTaskName}</p>
         <span class="category ${task.category.toLowerCase()}">${task.category}</span>
         <span class="priority ${task.priority.toLowerCase()}">${task.priority}</span>
-        <span class="due-date">${formattedDueDate ? formattedDueDate : 'No due date'}</span>
+        <span class="due-date">${dueDate}</span>
         <button class="completeBtn">o</button>
         <button class="deleteBtn" id="delete_task_btn_id${task.id}" style="font-size:13px;color:white;">✖️</button>
     `;
@@ -176,13 +196,22 @@ function formatDueDate(dateString) {
 }
 
 // Function to add a task (API call)
+
 async function addTask(taskText, category, priority, dueDate) {
+    dueDate = document.getElementById('taskDueDate').value;
+    console.log(`duedate: ${dueDate}`)
     console.log('addtask called');
+    if (dueDate === '') {
+        dueDate = 'No Due Date'
+    }else{
+        dueDate = dueDate
+    }
+
     try {
         const response = await fetch('http://localhost:5000/tasks', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ task_text: taskText, category, priority, due_date: dueDate })
+            body: JSON.stringify({ task_text: taskText, category, priority, dueDate: dueDate })
         });
         if (response.ok) {
             return await response.json();
