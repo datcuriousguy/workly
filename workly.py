@@ -52,15 +52,22 @@ def add_task():
         'priority': priority,
         'dueDate': due_date,
         'completed': False  --> obviously, a new task is by default, incomplete.
-
-    :return:
     """
 
     task_data = request.get_json()
     task_text = task_data['task_text']
     category = task_data.get('category', 'General')
     priority = task_data.get('priority', 'Low')
-    due_date = task_data.get('dueDate', None)
+    due_date = task_data.get('dueDate')
+    print(task_data)
+
+    """
+    11 / 3 / 2024
+    due_date = str(due_date)
+    
+    This extremely statement is a big part of what fixed the final bug I encountered while building workly. It took more 
+    than two days to discover this simple solution."""
+    due_date = str(due_date)
 
     connection = get_db_connection()
     cursor = connection.cursor()
@@ -75,7 +82,7 @@ def add_task():
     )
     connection.commit()
 
-    # Get the ID of the newly inserted task
+    # Getting the ID of the newly inserted task
     task_id = cursor.lastrowid
 
     # Return the newly created task
